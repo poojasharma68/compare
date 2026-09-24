@@ -1,0 +1,8 @@
+node_modules
+.next
+out
+.env
+.env.local
+.uixray
+*.tsbuildinfo
+next-env.d.ts

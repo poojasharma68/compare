@@ -1,0 +1,151 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-mono-stack), ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, monospace;
+
+  /* Surfaces */
+  --color-canvas: #f6f7f9;
+  --color-panel: #ffffff;
+  --color-raised: #f2f4f7;
+  --color-overlay: #e9ecf1;
+
+  /* Lines */
+  --color-line: #e2e6ed;
+  --color-line-strong: #c6ccd8;
+
+  /* Text */
+  --color-ink: #10131a;
+  --color-muted: #525a69;
+  /* Carries 11px labels, so it has to clear AA against the panel. */
+  --color-faint: #6b7382;
+
+  /* Brand */
+  --color-brand: #4f46e5;
+  --color-brand-dim: #a5b4fc;
+  /* Emphasis / hover: a step darker, since contrast on light grows downward. */
+  --color-brand-glow: #4338ca;
+  /* Text and icons sitting on a filled brand surface. */
+  --color-on-brand: #ffffff;
+
+  /* Status — darkened from their dark-theme values so a 12% tint still
+     carries readable text on white. */
+  --color-pass: #0a7a52;
+  --color-warn: #b45309;
+  --color-fail: #c92a20;
+  --color-critical: #a11b13;
+  --color-info: #0a63b8;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    /* A faint grid, like a measuring surface. */
+    background-image:
+      linear-gradient(to right, rgba(16, 19, 26, 0.028) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(16, 19, 26, 0.028) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: rgba(79, 70, 229, 0.18);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  input::placeholder {
+    color: var(--color-faint);
+  }
+}
+
+@layer components {
+  .panel {
+    background-color: var(--color-panel);
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    /* On a light canvas a border alone is not enough separation. */
+    box-shadow:
+      0 1px 2px rgba(16, 19, 26, 0.04),
+      0 1px 1px rgba(16, 19, 26, 0.03);
+  }
+
+  .hairline {
+    border-color: var(--color-line);
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+
+  .scroll-thin::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background-color: var(--color-line-strong);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  .scroll-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Staggered entrance for report sections. */
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .animate-rise {
+    animation: rise 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(200%);
+    }
+  }
+
+  .animate-sweep {
+    animation: sweep 1.6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-rise,
+    .animate-sweep {
+      animation: none;
+    }
+  }
+}
